@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinerek">
+        <item>1 Rzut</item>
+        <item>2 Rzuty</item>
+        <item>3 Rzuty</item>
+    </string-array>
+
+</resources>
