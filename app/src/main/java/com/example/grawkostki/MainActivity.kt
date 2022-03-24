@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     private var SumP1: Int = 0
     private var SumP2: Int = 0
     private var ilosc: Int = 0
-
+    private var sum:Int=0
     private var guzik:Int=0
     private var guzik2:Int=0
 
@@ -24,17 +24,13 @@ class MainActivity : AppCompatActivity() {
         val button2 = findViewById<Button>(R.id.rollbutton2)
 
         button.setOnClickListener {
-            guzik+=1
-                if(guzik==ilosc) {
-                    result()
-                }
-            else{
-                    rollDiceplayer1()
-                }
+            rollDiceplayer1()
+            guzik += 1
+
         }
         button2.setOnClickListener {
             rollDiceplayer2()
-            guzik2+=1
+            guzik2 += 1
         }
 
         val img1p1 = findViewById<ImageView>(R.id.p1dice1)
@@ -44,9 +40,7 @@ class MainActivity : AppCompatActivity() {
         val img2p2 = findViewById<ImageView>(R.id.p2dice2)
         val img3p2 = findViewById<ImageView>(R.id.p2dice3)
 
-        img1p1.setOnClickListener {
 
-        }
         val spinner: Spinner = findViewById(R.id.spinner)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -86,8 +80,14 @@ class MainActivity : AppCompatActivity() {
 
                 val roll2 = kostka.roll()
                 val roll3 = kostka.roll()
-                updateTextplayer1(roll, roll2, roll3)
-                UpdateImgplayer1(roll, roll2, roll3)
+                if(ilosc!=guzik&&guzik<ilosc) {
+
+
+                        updateTextplayer1(roll, roll2, roll3)
+                        UpdateImgplayer1(roll, roll2, roll3)
+                       // result()
+
+                }
             }
 
 
@@ -97,9 +97,11 @@ class MainActivity : AppCompatActivity() {
         val roll4 = kostka2.roll()
         val roll5 = kostka2.roll()
         val roll6 = kostka2.roll()
-        updateTextplayer2(roll4, roll5, roll6)
-        UpdateImgplayer2(roll4, roll5, roll6)
-
+        if(ilosc!=guzik2&&guzik2<ilosc) {
+            updateTextplayer2(roll4, roll5, roll6)
+            UpdateImgplayer2(roll4, roll5, roll6)
+           // result()
+        }
     }
 
     private fun UpdateImgplayer1(roll: Int, roll2: Int, roll3: Int) {
@@ -137,8 +139,12 @@ class MainActivity : AppCompatActivity() {
         val rollResultTxt = findViewById<TextView>(R.id.result)
         val wynik: Int
         val wynik2: Int
-        SumP1 = roll + roll2 + roll3
-        result()
+
+        if(ilosc!=guzik2&&guzik2<ilosc) {
+            SumP1 += (roll + roll2 + roll3)
+        }
+
+        rollResultTxt.text= SumP1.toString()
 
 
     }
@@ -146,24 +152,39 @@ class MainActivity : AppCompatActivity() {
     fun updateTextplayer2(roll4: Int, roll5: Int, roll6: Int) {
         val rollResultTxt = findViewById<TextView>(R.id.result)
         val wynik: Int
-        SumP2 = roll4 + roll5 + roll6
-        result()
+        if(ilosc!=guzik2&&guzik2<ilosc) {
+            SumP2 += roll4 + roll5 + roll6
+        }
+
+        rollResultTxt.text= SumP2.toString()
+
 
     }
 
     fun result() {
         val ResultTxt = findViewById<TextView>(R.id.result)
-        if (SumP1 > SumP2) {
-            ResultTxt.text = "Wygrał gracz 1"
-        } else if (SumP1 < SumP2) {
-            ResultTxt.text = "Wygrał gracz 2"
-        } else if (SumP1 == SumP2) {
-            ResultTxt.text = "Remis"
+        if(ilosc!=guzik2&&guzik2<ilosc) {
+
+            if (SumP1 > SumP2) {
+                ResultTxt.text = "Wygrał gracz 1"
+            } else if (SumP1 < SumP2) {
+                ResultTxt.text = "Wygrał gracz 2"
+            } else if (SumP1 == SumP2) {
+                ResultTxt.text = "Remis"
+            }
         }
-
     }
 
-    fun howmany() {
+       /* fun suma(){
+        val ResultTxt = findViewById<TextView>(R.id.result)
+        if(ilosc!=guzik&&guzik<ilosc) {
+            SumP1+=SumP1
 
-    }
+        }
+        ResultTxt.text=SumP1.toString()
+        }*/
+        fun compare(){
+
+
+        }
 }
