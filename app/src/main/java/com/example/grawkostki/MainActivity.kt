@@ -1,24 +1,52 @@
 package com.example.grawkostki
 
+import android.content.Context
 import android.graphics.Color
+import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 
 class MainActivity : AppCompatActivity() {
 
+    var flashLightStatus: Boolean = false
     private var SumP1: Int = 0
     private var SumP2: Int = 0
     private var ilosc: Int = 0
     private var sum:Int=0
     private var guzik:Int=0
     private var guzik2:Int=0
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun openFlashLight() {
+        val cameraManager = getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val cameraId = cameraManager.cameraIdList[0]
 
+        if (!flashLightStatus) {
+            try {
+                cameraManager.setTorchMode(cameraId, true)
+                var flashLightStatus = true
+
+            } catch (e: CameraAccessException) {
+            }
+        } else {
+            try {
+                cameraManager.setTorchMode(cameraId, false)
+                var flashLightStatus = false
+            } catch (e: CameraAccessException) {
+            }
+        }
+
+    }
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        openFlashLight()
 
         val button = findViewById<Button>(R.id.rollbutton1)
         val button2 = findViewById<Button>(R.id.rollbutton2)
@@ -26,11 +54,13 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             rollDiceplayer1()
             guzik += 1
+            result()
 
         }
         button2.setOnClickListener {
             rollDiceplayer2()
             guzik2 += 1
+            result()
         }
 
         val img1p1 = findViewById<ImageView>(R.id.p1dice1)
@@ -85,7 +115,7 @@ class MainActivity : AppCompatActivity() {
 
                         updateTextplayer1(roll, roll2, roll3)
                         UpdateImgplayer1(roll, roll2, roll3)
-                       // result()
+                     //   result()
 
                 }
             }
@@ -140,30 +170,30 @@ class MainActivity : AppCompatActivity() {
         val wynik: Int
         val wynik2: Int
 
-        if(ilosc!=guzik2&&guzik2<ilosc) {
+
             SumP1 += (roll + roll2 + roll3)
-        }
 
-        rollResultTxt.text= SumP1.toString()
 
+       // rollResultTxt.text= SumP1.toString()
+        //result()
 
     }
 
     fun updateTextplayer2(roll4: Int, roll5: Int, roll6: Int) {
         val rollResultTxt = findViewById<TextView>(R.id.result)
         val wynik: Int
-        if(ilosc!=guzik2&&guzik2<ilosc) {
-            SumP2 += roll4 + roll5 + roll6
-        }
 
-        rollResultTxt.text= SumP2.toString()
+            SumP2 += roll4 + roll5 + roll6
+
+
+      //  rollResultTxt.text= SumP2.toString()
 
 
     }
 
     fun result() {
         val ResultTxt = findViewById<TextView>(R.id.result)
-        if(ilosc!=guzik2&&guzik2<ilosc) {
+        if(ilosc==guzik&&ilosc==guzik2) {
 
             if (SumP1 > SumP2) {
                 ResultTxt.text = "Wygrał gracz 1"
